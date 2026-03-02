@@ -1,6 +1,7 @@
 import Header from "./components/Header";
 import DayWrapper from "./components/DayWrapper";
 import Day01 from "./days/Day01";
+import Day02 from "./days/Day02";
 
 // ── Day registry ──────────────────────────────────────────────────────────
 // Add each new day here as the month progresses.
@@ -11,6 +12,13 @@ const days = [
     title: "A Simple Button",
     description: "Crafting a satisfying button press with scale.",
     component: <Day01 />,
+  },
+  {
+    day: 2,
+    title: "Infinite Slider",
+    description:
+      "Exploration on how to create an elegant and responsive infinite slider using Tailwind CSS",
+    component: <Day02 />,
   },
 ];
 // ──────────────────────────────────────────────────────────────────────────

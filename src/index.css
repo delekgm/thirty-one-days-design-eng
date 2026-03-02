@@ -13,14 +13,26 @@
   --font-body: "Inter", sans-serif;
 
   /* Neutral palette */
-  --color-canvas:  oklch(98% 0.003 240);  /* page background      */
-  --color-surface: oklch(95% 0.006 240);  /* elevated surfaces     */
-  --color-ink:     oklch(12% 0.020 240);  /* primary text          */
-  --color-muted:   oklch(50% 0.010 240);  /* secondary / meta text */
-  --color-line:    oklch(88% 0.010 240);  /* borders & dividers    */
+  --color-canvas: oklch(98% 0.003 240); /* page background      */
+  --color-surface: oklch(95% 0.006 240); /* elevated surfaces     */
+  --color-ink: oklch(12% 0.02 240); /* primary text          */
+  --color-muted: oklch(50% 0.01 240); /* secondary / meta text */
+  --color-line: oklch(88% 0.01 240); /* borders & dividers    */
 
   /* Accent — swap hue/chroma to re-theme the whole site */
-  --color-accent:  oklch(55% 0.220 264);
+  --color-accent: oklch(55% 0.22 264);
+
+  /* Day 2 Motion */
+  --animate-infinite-slider: infiniteSlider 30s linear infinite;
+
+  @keyframes infiniteSlider {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(calc(-250px * 5));
+    }
+  }
 }
 
 /* ─── Base styles ───────────────────────────────────────────────────────── */
