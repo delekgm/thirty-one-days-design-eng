@@ -21,18 +21,6 @@
 
   /* Accent — swap hue/chroma to re-theme the whole site */
   --color-accent: oklch(55% 0.22 264);
-
-  /* Day 2 Motion */
-  --animate-infinite-slider: infiniteSlider 30s linear infinite;
-
-  @keyframes infiniteSlider {
-    0% {
-      transform: translateX(0);
-    }
-    100% {
-      transform: translateX(calc(-250px * 5));
-    }
-  }
 }
 
 /* ─── Base styles ───────────────────────────────────────────────────────── */
