@@ -3,6 +3,7 @@ import DayWrapper from "./components/DayWrapper";
 import Day01 from "./days/Day01";
 import Day02 from "./days/Day02";
 import Day03 from "./days/Day03";
+import Day04 from "./days/Day04";
 
 // ── Day registry ──────────────────────────────────────────────────────────
 // Add each new day here as the month progresses.
@@ -26,6 +27,12 @@ const days = [
     title: "Card Stack",
     description: "Centered card stack.",
     component: <Day03 />,
+  },
+  {
+    day: 4,
+    title: "Icon Transition Button",
+    description: "A pleasing icon transition using blur.",
+    component: <Day04 />,
   },
 ];
 // ──────────────────────────────────────────────────────────────────────────
