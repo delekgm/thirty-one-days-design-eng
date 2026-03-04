@@ -2,6 +2,7 @@ import Header from "./components/Header";
 import DayWrapper from "./components/DayWrapper";
 import Day01 from "./days/Day01";
 import Day02 from "./days/Day02";
+import Day03 from "./days/Day03";
 
 // ── Day registry ──────────────────────────────────────────────────────────
 // Add each new day here as the month progresses.
@@ -19,6 +20,12 @@ const days = [
     description:
       "Exploration on how to create an elegant and responsive infinite slider using Tailwind CSS",
     component: <Day02 />,
+  },
+  {
+    day: 3,
+    title: "Card Stack",
+    description: "Centered card stack.",
+    component: <Day03 />,
   },
 ];
 // ──────────────────────────────────────────────────────────────────────────
