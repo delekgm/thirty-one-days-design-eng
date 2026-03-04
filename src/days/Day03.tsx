@@ -58,27 +58,27 @@ const Day03 = () => {
     {
       id: 1,
       z: 4,
-      img: "https://i.pinimg.com/736x/d7/bd/94/d7bd94a0231456ac7f6885de1eccd943.jpg",
+      img: "https://i.pinimg.com/1200x/bf/f0/56/bff05633bd82918f61bf0f4418a8292b.jpg",
     },
     {
       id: 2,
       z: 3,
-      img: "https://i.pinimg.com/236x/fd/5d/14/fd5d146cf06e32d30139e4e3f37c993c.jpg",
+      img: "https://i.pinimg.com/1200x/83/1d/15/831d152b264e7ab4dd17e0ed857e8260.jpg",
     },
     {
       id: 3,
       z: 2,
-      img: "https://i.pinimg.com/564x/c6/f8/e9/c6f8e988912e469686c431cc680ef49e.jpg",
+      img: "https://i.pinimg.com/1200x/8f/96/a7/8f96a7c196c0184db6cb376c73122b3a.jpg",
     },
     {
       id: 4,
       z: 1,
-      img: "https://i.pinimg.com/564x/1a/d6/b1/1ad6b124fee1e478689a9fda0c74e92f.jpg",
+      img: "https://i.pinimg.com/736x/0f/79/15/0f79155456c76bbec84b2f4c183957e8.jpg",
     },
     {
       id: 5,
       z: 0,
-      img: "https://i.pinimg.com/236x/bf/1d/d9/bf1dd9251d0e7f1936bdb9d95a480295.jpg",
+      img: "https://i.pinimg.com/736x/b0/d7/9c/b0d79caebac5096c09f6727309cd8427.jpg",
     },
   ];
   const [cards, setCards] = useState(initialCards);
@@ -121,7 +121,7 @@ const Day03 = () => {
                 <img
                   src={card.img}
                   alt="card"
-                  className="pointer-events-none w-full h-full rounded-lg object-cover"
+                  className="pointer-events-none w-full h-full rounded-lg object-cover shadow-sm"
                 ></img>
               </motion.div>
             </CardRotate>
