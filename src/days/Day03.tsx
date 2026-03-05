@@ -47,13 +47,6 @@ function CardRotate({ children, onSendToBack }: CardRotateProps) {
 }
 
 const Day03 = () => {
-  const CARD_SIZE = 208; // w-52 = 13rem
-  const ORIGIN_X = 0.9;
-  const ORIGIN_Y = 0.9;
-
-  const offsetX = (ORIGIN_X - 0.65) * CARD_SIZE; // 83.2
-  const offsetY = (ORIGIN_Y - 0.9) * CARD_SIZE; // 83.2
-
   const initialCards = [
     {
       id: 1,
@@ -96,10 +89,9 @@ const Day03 = () => {
   return (
     <div className="flex items-center justify-center">
       <div
-        className="relative h-52 w-52"
+        className="relative h-52 w-52 sm:-translate-x-[52px] lg:-translate-x-[64px]"
         style={{
           perspective: 600,
-          transform: `translate(${-offsetX}px, ${-offsetY}px)`,
         }}
       >
         {cards.map((card, index) => {

@@ -13,7 +13,7 @@ interface DayWrapperProps {
 
 // Wraps each day's entry: metadata header + a centered stage for the component
 const DayWrapper = ({ day, title, description, children }: DayWrapperProps) => (
-  <section className="pt-16">
+  <section className="pt-16 overflow-hidden">
     {/* ── Day metadata ──────────────────────────────────────────────── */}
     <div className="mb-8">
       {/* Day counter */}
@@ -33,7 +33,7 @@ const DayWrapper = ({ day, title, description, children }: DayWrapperProps) => (
     </div>
 
     {/* ── Component stage — children are centered inside ────────────── */}
-    <div className="bg-surface border-1 border-line rounded-2xl flex items-center justify-center min-h-96 p-12">
+    <div className="bg-surface border border-line rounded-2xl flex items-center justify-center min-h-96 p-12">
       {children}
     </div>
   </section>
