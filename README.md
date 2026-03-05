@@ -45,7 +45,7 @@ src/
 Extend the palette by adding new `--color-*` variables inside `@theme {}` in `src/index.css`. Each variable automatically generates Tailwind utilities (`bg-*`, `text-*`, `border-*`).
 
 | Variable          | Role                  |
-|-------------------|-----------------------|
+| ----------------- | --------------------- |
 | `--color-canvas`  | page background       |
 | `--color-surface` | day stage background  |
 | `--color-ink`     | primary text          |
@@ -54,3 +54,34 @@ Extend the palette by adding new `--color-*` variables inside `@theme {}` in `sr
 | `--color-accent`  | accent color          |
 
 All colors use **OKLCH** for perceptual uniformity. To re-theme the site, adjust the chroma and hue of `--color-accent`.
+
+Option B: React Three Fiber (declarative, more ergonomic)
+
+npm install three @react-three/fiber @react-three/drei
+npm install -D @types/three
+
+import { Canvas, useFrame } from "@react-three/fiber";
+import { useRef } from "react";
+import { Mesh } from "three";
+
+const Knot = () => {
+const ref = useRef<Mesh>(null!);
+useFrame((\_, delta) => {
+ref.current.rotation.x += delta _ 0.5;
+ref.current.rotation.y += delta _ 0.5;
+});
+return (
+<mesh ref={ref}>
+<torusKnotGeometry args={[0.8, 0.25, 120, 16]} />
+<meshNormalMaterial />
+</mesh>
+);
+};
+
+const DayNN = () => (
+<Canvas camera={{ position: [0, 0, 3] }}>
+<Knot />
+</Canvas>
+);
+
+export default DayNN;

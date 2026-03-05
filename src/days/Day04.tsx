@@ -7,7 +7,7 @@ const Day04 = () => {
     <button
       type="button"
       onClick={() => setOn((v) => !v)}
-      className="relative grid h-10 w-10 place-items-center rounded-lg bg-white shadow-sm shadow-ink/5 transition-colors hover:bg-canvas cursor-pointer border border-line active:scale-[0.97] transition-transform duration-150 ease-out"
+      className="relative grid h-10 w-10 place-items-center rounded-lg bg-white shadow-sm shadow-ink/5 transition-colors hover:bg-canvas cursor-pointer border border-line active:scale-[0.97] duration-220 ease"
       tabIndex={0}
       style={{ WebkitTapHighlightColor: "transparent" }}
       aria-pressed={on}
@@ -16,9 +16,9 @@ const Day04 = () => {
       <span
         className={[
           "absolute h-6 w-6 pointer-events-none",
-          "transition-[opacity,transform,filter] duration-220 ease-out",
+          "transition-[opacity,transform,filter] duration-220 ease",
           "will-change-[opacity,transform,filter]",
-          on ? "opacity-0 scale-97 blur-[2px]" : "opacity-100 scale-100 blur-0",
+          on ? "opacity-0 scale-95 blur-[2px]" : "opacity-100 scale-100 blur-0",
         ].join(" ")}
       >
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
@@ -36,11 +36,11 @@ const Day04 = () => {
       <span
         className={[
           "absolute h-6 w-6 pointer-events-none",
-          "transition-[opacity,transform,filter] duration-220 ease-out",
+          "transition-[opacity,transform,filter] duration-220 ease",
           "will-change-[opacity,transform,filter]",
           on
             ? "opacity-100 scale-100 blur-0"
-            : "opacity-0 scale-103 blur-[2px]",
+            : "opacity-0 scale-105 blur-[2px]",
         ].join(" ")}
       >
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
