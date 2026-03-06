@@ -4,6 +4,7 @@ import Day01 from "./days/Day01";
 import Day02 from "./days/Day02";
 import Day03 from "./days/Day03";
 import Day04 from "./days/Day04";
+import Day05 from "./days/Day05";
 
 // ── Day registry ──────────────────────────────────────────────────────────
 // Add each new day here as the month progresses.
@@ -34,6 +35,14 @@ const days = [
     description: "A pleasing icon transition using blur.",
     component: <Day04 />,
   },
+  {
+    day: 5,
+    title: "Ribbon",
+    description:
+      "Animated 3D ribbon using GLSL shaders, rendered via React Three Fiber.",
+    component: <Day05 />,
+    fullBleed: true,
+  },
 ];
 // ──────────────────────────────────────────────────────────────────────────
 
@@ -44,8 +53,14 @@ const App = () => (
 
     {/* One section per day, stacked vertically with generous spacing */}
     <main className="max-w-5xl mx-auto px-6 py-20 space-y-24">
-      {days.map(({ day, title, description, component }) => (
-        <DayWrapper key={day} day={day} title={title} description={description}>
+      {days.map(({ day, title, description, component, fullBleed }) => (
+        <DayWrapper
+          key={day}
+          day={day}
+          title={title}
+          description={description}
+          fullBleed={fullBleed}
+        >
           {component}
         </DayWrapper>
       ))}

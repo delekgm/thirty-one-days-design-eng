@@ -7,12 +7,20 @@ interface DayWrapperProps {
   title: string;
   // One or two sentence description of what was built
   description: string;
+  // Remove stage padding so content can touch rounded edges
+  fullBleed?: boolean;
   // The day's component or interaction
   children: ReactNode;
 }
 
 // Wraps each day's entry: metadata header + a centered stage for the component
-const DayWrapper = ({ day, title, description, children }: DayWrapperProps) => (
+const DayWrapper = ({
+  day,
+  title,
+  description,
+  fullBleed = false,
+  children,
+}: DayWrapperProps) => (
   <section className="pt-16 overflow-hidden">
     {/* ── Day metadata ──────────────────────────────────────────────── */}
     <div className="mb-8">
@@ -33,7 +41,14 @@ const DayWrapper = ({ day, title, description, children }: DayWrapperProps) => (
     </div>
 
     {/* ── Component stage — children are centered inside ────────────── */}
-    <div className="bg-surface border border-line rounded-2xl flex items-center justify-center min-h-96 p-12">
+    <div
+      className={[
+        "bg-surface border border-line rounded-2xl min-h-96",
+        fullBleed
+          ? "p-0 overflow-hidden"
+          : "flex items-center justify-center p-12",
+      ].join(" ")}
+    >
       {children}
     </div>
   </section>
