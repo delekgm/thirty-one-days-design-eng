@@ -477,7 +477,7 @@ function RibbonPostProcessing() {
           u_grainAmount: { value: 1.0 },
           u_opaque: { value: 0.0 },
           u_resolution: {
-            value: new THREE.Vector2(size.width, size.height),
+            value: new THREE.Vector2(1, 1),
           },
           u_clearColor: { value: new THREE.Vector3(0.95, 0.96, 0.98) },
         },
@@ -500,7 +500,7 @@ function RibbonPostProcessing() {
       shaderPassRef.current = null;
       composerRef.current = null;
     };
-  }, [camera, gl, scene, size.height, size.width]);
+  }, [camera, gl, scene]);
 
   useEffect(() => {
     const composer = composerRef.current;
