@@ -1,24 +1,78 @@
 import { useRef, useMemo, useEffect } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
+import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer.js";
+import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass.js";
+import { ShaderPass } from "three/examples/jsm/postprocessing/ShaderPass.js";
 
 // ── Palette texture ─────────────────────────────────────────────────────────
-// Builds a 512×1 canvas gradient in Stripe's color palette:
-// dark navy → blurple → cyan → pink → blurple → dark navy
+// Builds a 256×256 value-noise texture mapped through the color palette.
+// SCALE controls feature size — smaller value = larger blobs.
 function createPaletteTexture(): THREE.CanvasTexture {
+  const W = 256,
+    H = 256;
+  const SCALE = 0.015; // ~4 large blobs across each axis
+
+  // Seeded LCG for deterministic, React-StrictMode-safe output
+  let seed = 27;
+  const rand = () => {
+    seed = (seed * 1664525 + 1013904223) >>> 0;
+    return seed / 0xffffffff;
+  };
+
+  // Value noise on a small grid, bilinearly interpolated with smoothstep
+  const GW = Math.ceil(W * SCALE) + 2;
+  const GH = Math.ceil(H * SCALE) + 2;
+  const grid = Array.from({ length: GW * GH }, rand);
+  const smooth = (t: number) => t * t * (3 - 2 * t);
+  const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
+  const g = (cx: number, cy: number) => grid[(cy % GH) * GW + (cx % GW)];
+  const valueNoise = (x: number, y: number) => {
+    const ix = Math.floor(x),
+      iy = Math.floor(y);
+    const fx = smooth(x - ix),
+      fy = smooth(y - iy);
+    return lerp(
+      lerp(g(ix, iy), g(ix + 1, iy), fx),
+      lerp(g(ix, iy + 1), g(ix + 1, iy + 1), fx),
+      fy,
+    );
+  };
+
+  // Same color palette, now used as a 1D look-up for noise values
+  const stops: [number, number, number][] = [
+    [196, 204, 255], // periwinkle
+    [255, 160, 48], // warm amber
+    [255, 53, 117], // hot pink
+    [255, 85, 64], // coral
+    [128, 48, 216], // vivid purple
+    [196, 204, 255], // loop back to periwinkle
+  ];
+  const samplePalette = (t: number): [number, number, number] => {
+    const s = Math.min(t, 0.9999) * (stops.length - 1);
+    const i = Math.floor(s),
+      f = s - i;
+    return stops[i].map((c, j) =>
+      Math.round(c + (stops[i + 1][j] - c) * f),
+    ) as [number, number, number];
+  };
+
   const cvs = document.createElement("canvas");
-  cvs.width = 512;
-  cvs.height = 1;
+  cvs.width = W;
+  cvs.height = H;
   const ctx = cvs.getContext("2d")!;
-  const g = ctx.createLinearGradient(0, 0, 512, 0);
-  g.addColorStop(0, "#C4CCFF"); // soft periwinkle
-  g.addColorStop(0.25, "#FFA030"); // warm amber
-  g.addColorStop(0.48, "#FF3575"); // hot pink
-  g.addColorStop(0.64, "#FF5540"); // coral
-  g.addColorStop(0.82, "#8030D8"); // vivid purple
-  g.addColorStop(1, "#C4CCFF"); // back to periwinkle
-  ctx.fillStyle = g;
-  ctx.fillRect(0, 0, 512, 1);
+  const img = ctx.createImageData(W, H);
+  for (let y = 0; y < H; y++) {
+    for (let x = 0; x < W; x++) {
+      const [r, g2, b] = samplePalette(valueNoise(x * SCALE, y * SCALE));
+      const idx = (y * W + x) * 4;
+      img.data[idx] = r;
+      img.data[idx + 1] = g2;
+      img.data[idx + 2] = b;
+      img.data[idx + 3] = 255;
+    }
+  }
+  ctx.putImageData(img, 0, 0);
   return new THREE.CanvasTexture(cvs);
 }
 
@@ -249,8 +303,89 @@ const fragmentShader = /* glsl */ `
     float shimmer = pow(clamp(dispNoise, 0.0, 1.0), u_shimmerPower) * u_shimmerStrength;
 
     color += (1.0 - pdy) * 0.25;
-    color.rgb += shimmer;
+    color.rgb += shimmer * color.rgb;
     gl_FragColor = clamp(color, 0.0, 1.0);
+  }
+`;
+
+const postVertexShader = /* glsl */ `
+  varying vec2 v_uv;
+
+  void main() {
+    v_uv = uv;
+    gl_Position = vec4(position.xy, 0.0, 1.0);
+  }
+`;
+
+const postFragmentShader = /* glsl */ `
+  precision highp float;
+
+  uniform sampler2D u_scene;
+  uniform sampler2D u_depth;
+  uniform sampler2D u_derivative;
+  uniform float u_blurAmount;
+  uniform int u_blurSamples;
+  uniform float u_grainAmount;
+  uniform float u_opaque;
+  uniform vec2 u_resolution;
+  uniform vec3 u_clearColor;
+
+  varying vec2 v_uv;
+
+  #ifndef RANDOM
+  #define RANDOM
+  float random(in float x) {
+    return fract(sin(x) * 43758.5453);
+  }
+  float random(in vec2 st) {
+    return fract(sin(dot(st.xy, vec2(12.9898, 78.233))) * 43758.5453);
+  }
+  float random(in vec3 pos) {
+    return fract(sin(dot(pos.xyz, vec3(70.9898, 78.233, 32.4355))) * 43758.5453123);
+  }
+  #endif
+
+  #ifndef GRAIN
+  #define GRAIN
+  vec3 grain(vec3 color, float amount) {
+    float grid_position = random(gl_FragCoord.xy * 0.01);
+    vec3 dither_shift_RGB = vec3(4.0 / 255.0);
+    dither_shift_RGB = mix(amount * dither_shift_RGB, -amount * dither_shift_RGB, grid_position);
+    return color + dither_shift_RGB;
+  }
+  #endif
+
+  #ifndef BLUR_ANGULAR
+  #define BLUR_ANGULAR
+  vec4 blurAngular(sampler2D tex, vec2 uv, float angle, int samples) {
+    vec4 total = vec4(0.0);
+    vec2 coord = uv - 0.5;
+
+    float sampleCount = max(float(samples), 1.0);
+    float dist = 1.0 / sampleCount;
+    vec2 dir = vec2(cos(angle * dist), sin(angle * dist));
+    mat2 rot = mat2(dir.x, dir.y, -dir.y, dir.x);
+
+    for (int i = 0; i < 64; i += 1) {
+      if (i >= samples) break;
+      total += texture2D(tex, coord + 0.5);
+      coord *= rot;
+    }
+
+    return total * dist;
+  }
+  #endif
+
+  void main() {
+    vec4 sceneColor = texture2D(u_scene, v_uv);
+    vec4 blurColor = blurAngular(u_scene, v_uv, u_blurAmount, u_blurSamples);
+    float blurPower = smoothstep(0.0, 0.7, v_uv.y) - smoothstep(0.2, 1.0, v_uv.y);
+
+    vec4 finalColor = mix(blurColor, sceneColor, blurPower);
+    finalColor.rgb = grain(finalColor.rgb, u_grainAmount);
+
+    float alpha = mix(finalColor.a, 1.0, u_opaque);
+    gl_FragColor = vec4(min(finalColor.rgb, vec3(1.0)), alpha);
   }
 `;
 
@@ -322,6 +457,70 @@ function RibbonScene() {
   );
 }
 
+function RibbonPostProcessing() {
+  const { gl, scene, camera, size } = useThree();
+  const composerRef = useRef<EffectComposer | null>(null);
+  const shaderPassRef = useRef<ShaderPass | null>(null);
+
+  useEffect(() => {
+    const composer = new EffectComposer(gl);
+    const renderPass = new RenderPass(scene, camera);
+
+    const shaderPass = new ShaderPass(
+      {
+        uniforms: {
+          u_scene: { value: null },
+          u_depth: { value: null },
+          u_derivative: { value: null },
+          u_blurAmount: { value: 0.012 },
+          u_blurSamples: { value: 24 },
+          u_grainAmount: { value: 1.0 },
+          u_opaque: { value: 0.0 },
+          u_resolution: {
+            value: new THREE.Vector2(size.width, size.height),
+          },
+          u_clearColor: { value: new THREE.Vector3(0.95, 0.96, 0.98) },
+        },
+        vertexShader: postVertexShader,
+        fragmentShader: postFragmentShader,
+      },
+      "u_scene",
+    );
+
+    shaderPass.renderToScreen = true;
+    composer.addPass(renderPass);
+    composer.addPass(shaderPass);
+
+    composerRef.current = composer;
+    shaderPassRef.current = shaderPass;
+
+    return () => {
+      shaderPass.dispose();
+      composer.dispose();
+      shaderPassRef.current = null;
+      composerRef.current = null;
+    };
+  }, [camera, gl, scene, size.height, size.width]);
+
+  useEffect(() => {
+    const composer = composerRef.current;
+    const pass = shaderPassRef.current;
+    if (!composer || !pass) {
+      return;
+    }
+
+    const dpr = gl.getPixelRatio();
+    composer.setSize(size.width, size.height);
+    pass.uniforms.u_resolution.value.set(size.width * dpr, size.height * dpr);
+  }, [gl, size.height, size.width]);
+
+  useFrame(() => {
+    composerRef.current?.render();
+  }, 1);
+
+  return null;
+}
+
 // ── Day 05 export ─────────────────────────────────────────────────────────────
 const Day05 = () => (
   // isolation: isolate creates a stacking context so z-index: -1 on the Canvas
@@ -335,11 +534,17 @@ const Day05 = () => (
     }}
   >
     <Canvas
-      style={{ position: "absolute", inset: 0, zIndex: -1 }}
+      style={{ position: "absolute", inset: 0 }}
+      gl={{ alpha: true, antialias: true }}
       dpr={[1, 2]}
       camera={{ position: [0, -2, 10], fov: 75 }}
+      onCreated={({ gl, scene }) => {
+        gl.setClearColor(0x000000, 0);
+        scene.background = null;
+      }}
     >
       <RibbonScene />
+      <RibbonPostProcessing />
     </Canvas>
   </div>
 );
