@@ -1,13 +1,14 @@
 import {
+  useCallback,
   useEffect,
   useReducer,
-  useRef,
   useState,
   type CSSProperties,
 } from "react";
 
 const MAX_TOASTS = 3;
 const EXIT_DURATION_MS = 400;
+const TOAST_LIFETIME_MS = 3000;
 
 interface ToastItem {
   id: number;
@@ -19,7 +20,10 @@ interface ToastState {
   nextId: number;
 }
 
-type ToastAction = { type: "add" } | { type: "remove"; id: number };
+type ToastAction =
+  | { type: "add" }
+  | { type: "startExit"; id: number }
+  | { type: "remove"; id: number };
 
 const initialToastState: ToastState = {
   items: [],
@@ -28,29 +32,28 @@ const initialToastState: ToastState = {
 
 const toastReducer = (state: ToastState, action: ToastAction): ToastState => {
   if (action.type === "add") {
-    const nextToast: ToastItem = {
-      id: state.nextId,
-      exiting: false,
-    };
     const activeItems = state.items.filter((item) => !item.exiting);
-
-    if (activeItems.length < MAX_TOASTS) {
-      return {
-        items: [...state.items, nextToast],
-        nextId: state.nextId + 1,
-      };
-    }
-
     const oldestActiveId = activeItems[0]?.id;
 
+    const nextItems =
+      activeItems.length >= MAX_TOASTS
+        ? state.items.map((item) =>
+            item.id === oldestActiveId ? { ...item, exiting: true } : item,
+          )
+        : state.items;
+
     return {
-      items: [
-        ...state.items.map((item) =>
-          item.id === oldestActiveId ? { ...item, exiting: true } : item
-        ),
-        nextToast,
-      ],
+      items: [...nextItems, { id: state.nextId, exiting: false }],
       nextId: state.nextId + 1,
+    };
+  }
+
+  if (action.type === "startExit") {
+    return {
+      ...state,
+      items: state.items.map((item) =>
+        item.id === action.id ? { ...item, exiting: true } : item,
+      ),
     };
   }
 
@@ -62,31 +65,14 @@ const toastReducer = (state: ToastState, action: ToastAction): ToastState => {
 
 const Day06 = () => {
   const [toastState, dispatch] = useReducer(toastReducer, initialToastState);
-  const timersRef = useRef<Record<number, number>>({});
 
-  useEffect(() => {
-    toastState.items.forEach((item) => {
-      if (!item.exiting || timersRef.current[item.id]) {
-        return;
-      }
+  const handleStartExit = useCallback((id: number) => {
+    dispatch({ type: "startExit", id });
+  }, []);
 
-      const timer = window.setTimeout(() => {
-        dispatch({ type: "remove", id: item.id });
-        delete timersRef.current[item.id];
-      }, EXIT_DURATION_MS);
-
-      timersRef.current[item.id] = timer;
-    });
-  }, [toastState.items]);
-
-  useEffect(
-    () => () => {
-      Object.values(timersRef.current).forEach((timer) => {
-        window.clearTimeout(timer);
-      });
-    },
-    []
-  );
+  const handleRemoveToast = useCallback((id: number) => {
+    dispatch({ type: "remove", id });
+  }, []);
 
   return (
     <div className="relative flex h-80 w-full max-w-105 flex-col items-center p-6">
@@ -94,15 +80,18 @@ const Day06 = () => {
         {toastState.items.map((toast, i) => (
           <Toast
             key={toast.id}
+            id={toast.id}
             index={toastState.items.length - (i + 1)}
             exiting={toast.exiting}
+            onStartExit={handleStartExit}
+            onRemove={handleRemoveToast}
           />
         ))}
       </div>
 
       <button
         type="button"
-        className="relative mt-auto inline-block h-8 w-auto rounded-[9999px] bg-white px-3 text-sm font-medium text-[#1b1b1d] shadow-[0_0_0_1px_rgba(0,0,0,0.08),0px_2px_2px_rgba(0,0,0,0.04)]"
+        className="relative mt-auto inline-block h-8 w-auto rounded-full bg-white px-3 text-sm font-medium text-[#1b1b1d] sm-shadow"
         onClick={() => {
           dispatch({ type: "add" });
         }}
@@ -114,11 +103,14 @@ const Day06 = () => {
 };
 
 interface ToastProps {
+  id: number;
   index: number;
   exiting: boolean;
+  onStartExit: (id: number) => void;
+  onRemove: (id: number) => void;
 }
 
-const Toast = ({ index, exiting }: ToastProps) => {
+const Toast = ({ id, index, exiting, onStartExit, onRemove }: ToastProps) => {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -131,9 +123,37 @@ const Toast = ({ index, exiting }: ToastProps) => {
     };
   }, []);
 
+  useEffect(() => {
+    if (exiting) {
+      return;
+    }
+
+    const fadeTimer = window.setTimeout(() => {
+      onStartExit(id);
+    }, TOAST_LIFETIME_MS);
+
+    return () => {
+      window.clearTimeout(fadeTimer);
+    };
+  }, [exiting, id, onStartExit]);
+
+  useEffect(() => {
+    if (!exiting) {
+      return;
+    }
+
+    const removeTimer = window.setTimeout(() => {
+      onRemove(id);
+    }, EXIT_DURATION_MS);
+
+    return () => {
+      window.clearTimeout(removeTimer);
+    };
+  }, [exiting, id, onRemove]);
+
   return (
     <div
-      className="absolute bottom-0 flex w-full flex-col gap-1 rounded-lg bg-white px-3.5 pt-2.5 pb-3.25 text-[13px] shadow-[0px_0px_0px_1px_rgba(0,0,0,0.08),0px_1px_2px_-1px_rgba(0,0,0,0.08),0px_2px_4px_0px_rgba(0,0,0,0.04)] transition-[opacity,transform] duration-400 ease will-change-transform"
+      className="absolute bottom-0 flex w-full flex-col gap-1 rounded-lg bg-white px-3.5 pt-2.5 pb-3.25 text-[13px] sm-shadow transition-[opacity,transform] duration-400 ease will-change-transform"
       style={
         {
           "--index": index,
