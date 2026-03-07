@@ -5,6 +5,7 @@ import Day02 from "./days/Day02";
 import Day03 from "./days/Day03";
 import Day04 from "./days/Day04";
 import Day05 from "./days/Day05";
+import Day06 from "./days/Day06";
 
 // ── Day registry ──────────────────────────────────────────────────────────
 // Add each new day here as the month progresses.
@@ -42,6 +43,12 @@ const days = [
       "Animated 3D ribbon using GLSL shaders, rendered via React Three Fiber.",
     component: <Day05 />,
     fullBleed: true,
+  },
+  {
+    day: 6,
+    title: "Toaster",
+    description: "A simple toast component.",
+    component: <Day06 />,
   },
 ];
 // ──────────────────────────────────────────────────────────────────────────

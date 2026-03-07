@@ -46,7 +46,7 @@ const DayWrapper = ({
         "bg-surface border border-line rounded-2xl min-h-96",
         fullBleed
           ? "p-0 overflow-hidden"
-          : "flex items-center justify-center p-12",
+          : "flex items-center justify-center overflow-hidden p-12",
       ].join(" ")}
     >
       {children}
