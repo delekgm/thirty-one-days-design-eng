@@ -6,6 +6,7 @@ import Day03 from "./days/Day03";
 import Day04 from "./days/Day04";
 import Day05 from "./days/Day05";
 import Day06 from "./days/Day06";
+import Day07 from "./days/Day07";
 
 // ── Day registry ──────────────────────────────────────────────────────────
 // Add each new day here as the month progresses.
@@ -49,6 +50,12 @@ const days = [
     title: "Toaster",
     description: "A simple toast component.",
     component: <Day06 />,
+  },
+  {
+    day: 7,
+    title: "Icon Hover",
+    description: "A tiny delight.",
+    component: <Day07 />,
   },
 ];
 // ──────────────────────────────────────────────────────────────────────────
