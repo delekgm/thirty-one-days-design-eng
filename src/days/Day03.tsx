@@ -89,7 +89,7 @@ const Day03 = () => {
   return (
     <div className="flex items-center justify-center">
       <div
-        className="relative h-52 w-52 sm:-translate-x-[52px] lg:-translate-x-[64px]"
+        className="relative h-52 w-52 sm:-translate-x-13 lg:-translate-x-16"
         style={{
           perspective: 600,
         }}

@@ -89,10 +89,10 @@ const Day02 = () => {
     <div
       className="
         relative m-auto w-full overflow-hidden bg-surface
-        before:absolute before:left-0 before:top-0 before:z-10 before:h-full before:w-[100px]
+        before:absolute before:left-0 before:top-0 before:z-10 before:h-full before:w-25
         before:bg-[linear-gradient(to_right,var(--color-surface)_0%,transparent_100%)]
         before:content-['']
-        after:absolute after:right-0 after:top-0 after:z-10 after:h-full after:w-[100px]
+        after:absolute after:right-0 after:top-0 after:z-10 after:h-full after:w-25
         after:-scale-x-100
         after:bg-[linear-gradient(to_right,var(--color-surface)_0%,transparent_100%)]
         after:content-['']
@@ -106,10 +106,7 @@ const Day02 = () => {
     >
       <div ref={trackRef} className="flex w-max will-change-transform">
         {[...LOGOS, ...LOGOS].map((logo, index) => (
-          <div
-            key={index}
-            className="flex w-[125px] items-center justify-center"
-          >
+          <div key={index} className="flex w-31.25 items-center justify-center">
             {logo}
           </div>
         ))}
