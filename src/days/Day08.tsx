@@ -50,7 +50,7 @@ const Day08 = () => {
                 className={`h-1 w-10 rounded-sm sm-shadow ${
                   selected === i
                     ? "bg-accent"
-                    : "bg-line dark:bg-primary-dark-11"
+                    : "bg-ink dark:bg-primary-dark-11"
                 }`}
                 animate={{
                   scale: calculateScale(i),
