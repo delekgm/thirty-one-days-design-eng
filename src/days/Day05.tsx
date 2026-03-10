@@ -389,6 +389,8 @@ const postFragmentShader = /* glsl */ `
   }
 `;
 
+const timer = new THREE.Timer();
+
 // ── Inner R3F scene ───────────────────────────────────────────────────────────
 // Must live inside <Canvas> to access R3F context hooks.
 function RibbonScene() {
@@ -437,9 +439,15 @@ function RibbonScene() {
   }, [size.width, size.height]);
 
   // Advance time uniform every frame
-  useFrame(({ clock }) => {
+  useFrame(() => {
+    // Update the timer with the frame delta
+    timer.update();
+
+    // Get the total elapsed time
+    const time = timer.getElapsed();
+
     if (matRef.current) {
-      matRef.current.uniforms.u_time.value = clock.getElapsedTime();
+      matRef.current.uniforms.u_time.value = time;
     }
   });
 

@@ -32,6 +32,7 @@ const Day08 = () => {
 
           return (
             <button
+              key={i}
               className="relative inline-flex items-end justify-center py-1"
               onMouseEnter={() => handleMouseEnter(i)}
               onMouseLeave={handleMouseLeave}
@@ -46,7 +47,6 @@ const Day08 = () => {
               onTouchEnd={handleMouseLeave}
             >
               <motion.div
-                key={i}
                 className={`h-1 w-10 rounded-sm sm-shadow ${
                   selected === i
                     ? "bg-accent"
