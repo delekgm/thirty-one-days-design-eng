@@ -8,6 +8,7 @@ import Day05 from "./days/Day05";
 import Day06 from "./days/Day06";
 import Day07 from "./days/Day07";
 import Day08 from "./days/Day08";
+import Day09 from "./days/Day09";
 
 // ── Day registry ──────────────────────────────────────────────────────────
 // Add each new day here as the month progresses.
@@ -63,6 +64,12 @@ const days = [
     title: "Timeline",
     description: "A tasty timeline.",
     component: <Day08 />,
+  },
+  {
+    day: 9,
+    title: "Draggables",
+    description: "Draggable elements, just for fun.",
+    component: <Day09 />,
   },
 ];
 // ──────────────────────────────────────────────────────────────────────────
