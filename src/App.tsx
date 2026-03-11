@@ -10,6 +10,7 @@ import Day07 from "./days/Day07";
 import Day08 from "./days/Day08";
 import Day09 from "./days/Day09";
 import Day10 from "./days/Day10";
+import Day11 from "./days/Day11";
 
 // ── Day registry ──────────────────────────────────────────────────────────
 // Add each new day here as the month progresses.
@@ -77,6 +78,14 @@ const days = [
     title: "Content Load",
     description: "The now classic way to load in content on your webpage.",
     component: <Day10 />,
+  },
+  {
+    day: 11,
+    title: "Magnifying Glass",
+    description:
+      "Drag the glass lens to explore the scene through a physics-inspired optical simulation with edge refraction and specular highlights.",
+    component: <Day11 />,
+    fullBleed: true,
   },
 ];
 // ──────────────────────────────────────────────────────────────────────────
