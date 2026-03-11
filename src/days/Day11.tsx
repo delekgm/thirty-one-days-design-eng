@@ -7,7 +7,7 @@ const MAG = 2.5;
 
 // Rich scene — rendered once in background, once clipped+scaled inside the lens
 const Scene = () => (
-  <div className="absolute inset-0 overflow-hidden bg-canvas flex flex-col justify-left gap-3 p-10">
+  <div className="absolute inset-0 overflow-hidden bg-surface flex flex-col justify-left gap-3 p-10">
     {/* Dot grid texture */}
     <div
       className="absolute inset-0 pointer-events-none"
