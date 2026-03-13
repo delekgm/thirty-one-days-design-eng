@@ -11,6 +11,7 @@ import Day08 from "./days/Day08";
 import Day09 from "./days/Day09";
 import Day10 from "./days/Day10";
 import Day11 from "./days/Day11";
+import Day12 from "./days/Day12";
 
 // ── Day registry ──────────────────────────────────────────────────────────
 // Add each new day here as the month progresses.
@@ -86,6 +87,13 @@ const days = [
       "Drag the glass lens to explore the scene through a physics-inspired optical simulation with edge refraction and specular highlights.",
     component: <Day11 />,
     fullBleed: true,
+  },
+  {
+    day: 12,
+    title: "Infinite Card Stack",
+    description:
+      "A swipeable, recycling card stack with tethered spring physics.",
+    component: <Day12 />,
   },
 ];
 // ──────────────────────────────────────────────────────────────────────────
