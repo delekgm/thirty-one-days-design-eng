@@ -12,6 +12,7 @@ import Day09 from "./days/Day09";
 import Day10 from "./days/Day10";
 import Day11 from "./days/Day11";
 import Day12 from "./days/Day12";
+import Day13 from "./days/Day13";
 
 // ── Day registry ──────────────────────────────────────────────────────────
 // Add each new day here as the month progresses.
@@ -94,6 +95,12 @@ const days = [
     description:
       "A swipeable, recycling card stack with tethered spring physics.",
     component: <Day12 />,
+  },
+  {
+    day: 13,
+    title: "Pill Tabs",
+    description: "Nice pill tabs, with a subtle spring.",
+    component: <Day13 />,
   },
 ];
 // ──────────────────────────────────────────────────────────────────────────
