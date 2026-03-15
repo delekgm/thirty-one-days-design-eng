@@ -13,6 +13,7 @@ import Day10 from "./days/Day10";
 import Day11 from "./days/Day11";
 import Day12 from "./days/Day12";
 import Day13 from "./days/Day13";
+import Day14 from "./days/Day14";
 
 // ── Day registry ──────────────────────────────────────────────────────────
 // Add each new day here as the month progresses.
@@ -101,6 +102,12 @@ const days = [
     title: "Pill Tabs",
     description: "Nice pill tabs, with a subtle spring.",
     component: <Day13 />,
+  },
+  {
+    day: 14,
+    title: "Options Menu",
+    description: "A popover dropdown with a scale + fade + blur enter transition.",
+    component: <Day14 />,
   },
 ];
 // ──────────────────────────────────────────────────────────────────────────
