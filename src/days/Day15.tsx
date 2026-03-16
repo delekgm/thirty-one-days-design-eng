@@ -22,15 +22,14 @@ const hiddenGrow = "opacity-0 scale-105 blur-[2px]";
 function ClipPathButton({ icon, holdIcon, color }: ClipPathButtonProps) {
   const [progress, setProgress] = useState(0);
   const [phase, setPhase] = useState<Phase>("idle");
-  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const startTimeRef = useRef<number | null>(null);
   const spinTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const successTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const rafRef = useRef<number | null>(null);
 
   // Clean up timers on unmount
   useEffect(() => {
     return () => {
-      if (intervalRef.current) clearInterval(intervalRef.current);
       if (spinTimeoutRef.current) clearTimeout(spinTimeoutRef.current);
       if (successTimeoutRef.current) clearTimeout(successTimeoutRef.current);
     };
@@ -39,28 +38,33 @@ function ClipPathButton({ icon, holdIcon, color }: ClipPathButtonProps) {
   const startHold = () => {
     if (phase !== "idle") return;
     setPhase("holding");
-    startTimeRef.current = Date.now();
-    intervalRef.current = setInterval(() => {
-      const elapsed = Date.now() - startTimeRef.current!;
+    startTimeRef.current = performance.now();
+
+    const tick = (now: number) => {
+      if (startTimeRef.current === null) return;
+      const elapsed = now - startTimeRef.current;
       const p = Math.min(elapsed / HOLD_DURATION, 1);
       setProgress(p);
-      if (p >= 1) {
-        clearInterval(intervalRef.current!);
+      if (p < 1) {
+        rafRef.current = requestAnimationFrame(tick);
+      } else {
         setPhase("spinning");
         spinTimeoutRef.current = setTimeout(() => {
           setPhase("success");
           successTimeoutRef.current = setTimeout(() => {
             setPhase("idle");
             setProgress(0);
-          }, 1200);
+          }, 600);
         }, SPIN_DURATION);
       }
-    }, 10);
+    };
+
+    rafRef.current = requestAnimationFrame(tick);
   };
 
   const endHold = () => {
-    if (intervalRef.current) {
-      clearInterval(intervalRef.current);
+    if (rafRef.current) {
+      cancelAnimationFrame(rafRef.current);
     }
     if (phase === "holding") {
       setPhase("idle");
