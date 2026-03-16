@@ -1,4 +1,4 @@
-import { useState, useRef, type ReactNode } from "react";
+import { useState, useRef, useEffect, type ReactNode } from "react";
 
 // Phase type for the button state machine
 type Phase = "idle" | "holding" | "spinning" | "success";
@@ -9,13 +9,31 @@ interface ClipPathButtonProps {
   color: string;
 }
 
+const HOLD_DURATION = 600;
+const SPIN_DURATION = 800;
+
+// Shared transition classes for the three overlay icon states
+const overlayIconBase = "absolute flex items-center justify-center transition-[opacity,transform,filter] duration-200 ease";
+const visible = "opacity-100 scale-100 blur-0";
+const hiddenShrink = "opacity-0 scale-95 blur-[2px]";
+const hiddenGrow = "opacity-0 scale-105 blur-[2px]";
+
 function ClipPathButton({ icon, holdIcon, color }: ClipPathButtonProps) {
   const [progress, setProgress] = useState(0);
   const [phase, setPhase] = useState<Phase>("idle");
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const startTimeRef = useRef<number | null>(null);
-  const HOLD_DURATION = 600;
-  const SPIN_DURATION = 800;
+  const spinTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const successTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Clean up timers on unmount
+  useEffect(() => {
+    return () => {
+      if (intervalRef.current) clearInterval(intervalRef.current);
+      if (spinTimeoutRef.current) clearTimeout(spinTimeoutRef.current);
+      if (successTimeoutRef.current) clearTimeout(successTimeoutRef.current);
+    };
+  }, []);
 
   const startHold = () => {
     if (phase !== "idle") return;
@@ -28,9 +46,9 @@ function ClipPathButton({ icon, holdIcon, color }: ClipPathButtonProps) {
       if (p >= 1) {
         clearInterval(intervalRef.current!);
         setPhase("spinning");
-        setTimeout(() => {
+        spinTimeoutRef.current = setTimeout(() => {
           setPhase("success");
-          setTimeout(() => {
+          successTimeoutRef.current = setTimeout(() => {
             setPhase("idle");
             setProgress(0);
           }, 1200);
@@ -91,12 +109,20 @@ function ClipPathButton({ icon, holdIcon, color }: ClipPathButtonProps) {
               : "clip-path 0.2s cubic-bezier(0.22, 1, 0.36, 1)",
         }}
       >
-        {phase === "spinning" && <Spinner />}
-        {phase === "success" && (
-          <span className="flex items-center animate-[fadeInUp_0.3s_ease_both]">
-            {holdIcon}
-          </span>
-        )}
+        {/* White icon — visible during hold, exits into spinner */}
+        <span className={`${overlayIconBase} ${phase === "holding" ? visible : hiddenShrink}`}>
+          {icon}
+        </span>
+
+        {/* Spinner — exits with scale-down + blur */}
+        <span className={`${overlayIconBase} ${phase === "spinning" ? visible : hiddenShrink}`}>
+          <Spinner />
+        </span>
+
+        {/* Success icon — enters with scale-up + blur */}
+        <span className={`${overlayIconBase} ${phase === "success" ? visible : hiddenGrow}`}>
+          {holdIcon}
+        </span>
       </span>
     </button>
   );
@@ -113,6 +139,8 @@ const Day15 = () => {
 };
 
 export default Day15;
+
+// ── Icon data ────────────────────────────────────────────────────────────────
 
 const checkIcon = (
   <svg
@@ -254,19 +282,8 @@ function Spinner() {
       fill="none"
       className="animate-[spin_0.5s_linear_infinite]"
     >
-      <circle
-        cx="12"
-        cy="12"
-        r="10"
-        stroke="rgba(255,255,255,0.25)"
-        strokeWidth="2.5"
-      />
-      <path
-        d="M12 2a10 10 0 0 1 10 10"
-        stroke="#fff"
-        strokeWidth="2.5"
-        strokeLinecap="round"
-      />
+      <circle cx="12" cy="12" r="10" stroke="rgba(255,255,255,0.25)" strokeWidth="2.5" />
+      <path d="M12 2a10 10 0 0 1 10 10" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" />
     </svg>
   );
 }
