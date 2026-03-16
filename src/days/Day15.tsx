@@ -13,7 +13,8 @@ const HOLD_DURATION = 600;
 const SPIN_DURATION = 800;
 
 // Shared transition classes for the three overlay icon states
-const overlayIconBase = "absolute flex items-center justify-center transition-[opacity,transform,filter] duration-200 ease";
+const overlayIconBase =
+  "absolute flex items-center justify-center transition-[opacity,transform,filter] duration-200 ease";
 const visible = "opacity-100 scale-100 blur-0";
 const hiddenShrink = "opacity-0 scale-95 blur-[2px]";
 const hiddenGrow = "opacity-0 scale-105 blur-[2px]";
@@ -110,17 +111,23 @@ function ClipPathButton({ icon, holdIcon, color }: ClipPathButtonProps) {
         }}
       >
         {/* White icon — visible during hold, exits into spinner */}
-        <span className={`${overlayIconBase} ${phase === "holding" ? visible : hiddenShrink}`}>
+        <span
+          className={`${overlayIconBase} ${phase === "holding" ? visible : hiddenShrink}`}
+        >
           {icon}
         </span>
 
         {/* Spinner — exits with scale-down + blur */}
-        <span className={`${overlayIconBase} ${phase === "spinning" ? visible : hiddenShrink}`}>
+        <span
+          className={`${overlayIconBase} ${phase === "spinning" ? visible : hiddenShrink}`}
+        >
           <Spinner />
         </span>
 
         {/* Success icon — enters with scale-up + blur */}
-        <span className={`${overlayIconBase} ${phase === "success" ? visible : hiddenGrow}`}>
+        <span
+          className={`${overlayIconBase} ${phase === "success" ? visible : hiddenGrow}`}
+        >
           {holdIcon}
         </span>
       </span>
@@ -280,10 +287,21 @@ function Spinner() {
       height="28"
       viewBox="0 0 24 24"
       fill="none"
-      className="animate-[spin_0.5s_linear_infinite]"
+      className="animate-[spin_0.3s_linear_infinite]"
     >
-      <circle cx="12" cy="12" r="10" stroke="rgba(255,255,255,0.25)" strokeWidth="2.5" />
-      <path d="M12 2a10 10 0 0 1 10 10" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" />
+      <circle
+        cx="12"
+        cy="12"
+        r="10"
+        stroke="rgba(255,255,255,0.25)"
+        strokeWidth="2.5"
+      />
+      <path
+        d="M12 2a10 10 0 0 1 10 10"
+        stroke="#fff"
+        strokeWidth="2.5"
+        strokeLinecap="round"
+      />
     </svg>
   );
 }

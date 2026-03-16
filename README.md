@@ -85,3 +85,11 @@ const DayNN = () => (
 );
 
 export default DayNN;
+
+Virtualization — only cards visible on screen (plus a small buffer) are rendered. As you pan, cells are computed on the fly from your viewport position divided by the cell size, so there's no actual "grid" in memory — just math.
+
+Deterministic hashing — each card's content (color, icon, label) is derived from a hash of its (x, y) coordinate, so it's always consistent no matter how far you pan or revisit a position.
+
+Pointer-based panning with momentum — drag to pan, and on release the velocity decays with a friction coefficient (0.94) for a smooth inertia coast.
+
+The core loop is simple: Math.floor(-offset / cellSize) gives you the range of visible grid indices, you render only those, and position them at col \* cellSize + offset. That's the whole trick — the grid is infinite because you never store it, you just compute what's visible.
