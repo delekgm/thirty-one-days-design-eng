@@ -14,6 +14,7 @@ import Day11 from "./days/Day11";
 import Day12 from "./days/Day12";
 import Day13 from "./days/Day13";
 import Day14 from "./days/Day14";
+import Day15 from "./days/Day15";
 
 // ── Day registry ──────────────────────────────────────────────────────────
 // Add each new day here as the month progresses.
@@ -106,8 +107,16 @@ const days = [
   {
     day: 14,
     title: "Options Menu",
-    description: "A popover dropdown with a scale + fade + blur enter transition.",
+    description:
+      "A popover dropdown with a scale + fade + blur enter transition.",
     component: <Day14 />,
+  },
+  {
+    day: 15,
+    title: "Clip Path Buttons",
+    description:
+      "Using clip path for dynamic button interactions. Press and hold to confirm the action.",
+    component: <Day15 />,
   },
 ];
 // ──────────────────────────────────────────────────────────────────────────
