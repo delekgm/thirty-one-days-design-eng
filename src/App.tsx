@@ -16,6 +16,7 @@ import Day13 from "./days/Day13";
 import Day14 from "./days/Day14";
 import Day15 from "./days/Day15";
 import Day16 from "./days/Day16";
+import Day17 from "./days/Day17";
 
 // ── Day registry ──────────────────────────────────────────────────────────
 // Add each new day here as the month progresses.
@@ -124,6 +125,12 @@ const days = [
     title: "Infinite Grid",
     description: "Take a look around, forever.",
     component: <Day16 />,
+  },
+  {
+    day: 17,
+    title: "Sheet",
+    description: "An Apple-esque sheet component.",
+    component: <Day17 />,
   },
 ];
 // ──────────────────────────────────────────────────────────────────────────
