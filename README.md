@@ -55,37 +55,6 @@ Extend the palette by adding new `--color-*` variables inside `@theme {}` in `sr
 
 All colors use **OKLCH** for perceptual uniformity. To re-theme the site, adjust the chroma and hue of `--color-accent`.
 
-Option B: React Three Fiber (declarative, more ergonomic)
-
-npm install three @react-three/fiber @react-three/drei
-npm install -D @types/three
-
-import { Canvas, useFrame } from "@react-three/fiber";
-import { useRef } from "react";
-import { Mesh } from "three";
-
-const Knot = () => {
-const ref = useRef<Mesh>(null!);
-useFrame((\_, delta) => {
-ref.current.rotation.x += delta _ 0.5;
-ref.current.rotation.y += delta _ 0.5;
-});
-return (
-<mesh ref={ref}>
-<torusKnotGeometry args={[0.8, 0.25, 120, 16]} />
-<meshNormalMaterial />
-</mesh>
-);
-};
-
-const DayNN = () => (
-<Canvas camera={{ position: [0, 0, 3] }}>
-<Knot />
-</Canvas>
-);
-
-export default DayNN;
-
 Virtualization — only cards visible on screen (plus a small buffer) are rendered. As you pan, cells are computed on the fly from your viewport position divided by the cell size, so there's no actual "grid" in memory — just math.
 
 Deterministic hashing — each card's content (color, icon, label) is derived from a hash of its (x, y) coordinate, so it's always consistent no matter how far you pan or revisit a position.
