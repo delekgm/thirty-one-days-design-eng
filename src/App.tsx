@@ -18,6 +18,7 @@ import Day15 from "./days/Day15";
 import Day16 from "./days/Day16";
 import Day17 from "./days/Day17";
 import Day18 from "./days/Day18";
+import Day19 from "./days/Day19";
 
 // ── Day registry ──────────────────────────────────────────────────────────
 // Add each new day here as the month progresses.
@@ -140,6 +141,13 @@ const days = [
       "A Stripe-inspired 3D globe with twinkling land dots and traveling connection arcs.",
     component: <Day18 />,
     fullBleed: true,
+  },
+  {
+    day: 19,
+    title: "Accordion",
+    description:
+      "A clean FAQ accordion built with Base UI — unstyled, accessible, animated.",
+    component: <Day19 />,
   },
 ];
 // ──────────────────────────────────────────────────────────────────────────
