@@ -19,6 +19,7 @@ import Day16 from "./days/Day16";
 import Day17 from "./days/Day17";
 import Day18 from "./days/Day18";
 import Day19 from "./days/Day19";
+import Day20 from "./days/Day20";
 
 // ── Day registry ──────────────────────────────────────────────────────────
 // Add each new day here as the month progresses.
@@ -148,6 +149,12 @@ const days = [
     description:
       "A clean FAQ accordion built with Base UI — unstyled, accessible, animated.",
     component: <Day19 />,
+  },
+  {
+    day: 20,
+    title: "Number Field",
+    description: "Styling a Base UI number field.",
+    component: <Day20 />,
   },
 ];
 // ──────────────────────────────────────────────────────────────────────────
