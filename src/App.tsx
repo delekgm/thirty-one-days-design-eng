@@ -20,6 +20,7 @@ import Day17 from "./days/Day17";
 import Day18 from "./days/Day18";
 import Day19 from "./days/Day19";
 import Day20 from "./days/Day20";
+import Day21 from "./days/Day21";
 
 // ── Day registry ──────────────────────────────────────────────────────────
 // Add each new day here as the month progresses.
@@ -155,6 +156,13 @@ const days = [
     title: "Number Field",
     description: "Styling a Base UI number field.",
     component: <Day20 />,
+  },
+  {
+    day: 21,
+    title: "Gooey Button",
+    description:
+      "A button with a gooey SVG filter — an arrow circle blob-merges out on hover.",
+    component: <Day21 />,
   },
 ];
 // ──────────────────────────────────────────────────────────────────────────
