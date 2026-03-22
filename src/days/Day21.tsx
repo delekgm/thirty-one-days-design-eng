@@ -1,3 +1,5 @@
+import { useRef } from "react";
+
 // SVG filter that creates the gooey blob-merge effect
 const GooeyFilter = () => (
   <svg className="absolute w-0 h-0" aria-hidden="true">
@@ -32,10 +34,23 @@ const ArrowRight = (
   </svg>
 );
 
-const GooeyButton = ({ label = "Get Started" }: { label?: string }) => (
+const GooeyButton = ({ label = "Get Started" }: { label?: string }) => {
+  const ref = useRef<HTMLButtonElement>(null);
+
+  const handleClick = () => {
+    const el = ref.current;
+    if (!el || el.dataset.clicked) return;
+    el.dataset.clicked = "";
+    setTimeout(() => delete el.dataset.clicked, 220);
+  };
+
+  return (
   <button
+    ref={ref}
+    onClick={handleClick}
     className="relative cursor-pointer bg-transparent border-none p-0 group
-               active:scale-97 transition-transform duration-220 ease-out"
+               active:scale-97 transition-transform duration-220 ease-out
+               after:content-[''] after:absolute after:inset-y-0 after:left-full after:w-16"
     style={{ filter: "url(#gooey)" }}
   >
     <div className="flex items-center">
@@ -50,15 +65,15 @@ const GooeyButton = ({ label = "Get Started" }: { label?: string }) => (
       {/* Arrow circle — sits behind the pill at rest, slides out on hover */}
       <div
         className="absolute right-0 z-0 w-12 h-12 rounded-full bg-ink
-                    overflow-hidden translate-x-0 group-hover:translate-x-[120%]
-                    transition-transform duration-500 ease-in-out"
+                    overflow-hidden translate-x-0 scale-90 group-hover:translate-x-[120%] group-hover:scale-100
+                    transition-transform duration-500 ease-[cubic-bezier(0.34,1.3,0.64,1)]"
       >
-        {/* Two stacked arrows — on active, one exits right while the other enters from left */}
-        {/* duration-0 base = instant snap-back; group-active:duration-220 = smooth slide-out */}
+        {/* Two stacked arrows — on click, one exits right while the other enters from left */}
+        {/* duration-0 base = instant snap-back; group-data-clicked:duration-220 = smooth slide-out */}
         <div className="grid place-items-center w-full h-full text-canvas">
           <span
-            className="col-start-1 row-start-1 -translate-x-[170%] group-active:translate-x-0
-                       transition-transform duration-0 group-active:duration-220
+            className="col-start-1 row-start-1 -translate-x-[170%] group-data-clicked:translate-x-0
+                       transition-transform duration-0 group-data-clicked:duration-220
                        ease-[cubic-bezier(0.785,0.135,0.15,0.86)]"
           >
             <span
@@ -69,8 +84,8 @@ const GooeyButton = ({ label = "Get Started" }: { label?: string }) => (
             </span>
           </span>
           <span
-            className="col-start-1 row-start-1 translate-x-0 group-active:translate-x-[170%]
-                       transition-transform duration-0 group-active:duration-220
+            className="col-start-1 row-start-1 translate-x-0 group-data-clicked:translate-x-[170%]
+                       transition-transform duration-0 group-data-clicked:duration-220
                        ease-[cubic-bezier(0.785,0.135,0.15,0.86)]"
           >
             <span
@@ -84,7 +99,8 @@ const GooeyButton = ({ label = "Get Started" }: { label?: string }) => (
       </div>
     </div>
   </button>
-);
+  );
+};
 
 const Day21 = () => {
   return (
