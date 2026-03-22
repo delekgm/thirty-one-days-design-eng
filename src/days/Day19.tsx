@@ -58,25 +58,27 @@ const items = [
 
 const Day19 = () => {
   return (
-    <Accordion.Root className="flex w-full max-w-md flex-col self-start overflow-hidden rounded-2xl bg-white sm-shadow text-ink">
-      {items.map(({ value, question, answer }) => (
-        <Accordion.Item
-          key={value}
-          value={value}
-          className="border-b border-line last:border-b-0"
-        >
-          <Accordion.Header>
-            <Accordion.Trigger className="group relative flex w-full items-center justify-between gap-4 px-5 py-4 text-left text-base font-semibold text-ink hover:bg-surface/60 data-panel-open:border-b data-panel-open:border-line focus-visible:z-1 focus-visible:outline-2 focus-visible:outline-accent">
-              {question}
-              <PlusIcon />
-            </Accordion.Trigger>
-          </Accordion.Header>
-          <Accordion.Panel className="h-(--accordion-panel-height) overflow-hidden text-sm text-muted transition-[height] ease-out duration-200 data-ending-style:h-0 data-starting-style:h-0">
-            <div className="px-5 pt-3 pb-5">{answer}</div>
-          </Accordion.Panel>
-        </Accordion.Item>
-      ))}
-    </Accordion.Root>
+    <div className="min-h-96 w-full flex justify-center">
+      <Accordion.Root className="flex w-full max-w-md flex-col self-start overflow-hidden rounded-2xl bg-white sm-shadow text-ink">
+        {items.map(({ value, question, answer }) => (
+          <Accordion.Item
+            key={value}
+            value={value}
+            className="border-b border-line last:border-b-0"
+          >
+            <Accordion.Header>
+              <Accordion.Trigger className="group relative flex w-full items-center justify-between gap-4 px-5 py-4 text-left text-base font-semibold text-ink hover:bg-surface/60 data-panel-open:border-b data-panel-open:border-line focus-visible:z-1 focus-visible:outline-2 focus-visible:outline-accent">
+                {question}
+                <PlusIcon />
+              </Accordion.Trigger>
+            </Accordion.Header>
+            <Accordion.Panel className="h-(--accordion-panel-height) overflow-hidden text-sm text-muted transition-[height] ease-out duration-200 data-ending-style:h-0 data-starting-style:h-0">
+              <div className="px-5 pt-3 pb-5">{answer}</div>
+            </Accordion.Panel>
+          </Accordion.Item>
+        ))}
+      </Accordion.Root>
+    </div>
   );
 };
 
