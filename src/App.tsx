@@ -23,6 +23,7 @@ import Day20 from "./days/Day20";
 import Day21 from "./days/Day21";
 import Day22 from "./days/Day22";
 import Day23 from "./days/Day23";
+import Day24 from "./days/Day24";
 
 // ── Day registry ──────────────────────────────────────────────────────────
 // Add each new day here as the month progresses.
@@ -178,6 +179,13 @@ const days = [
     description:
       "An Apple Cover Flow-style carousel with 3D perspective and infinite looping.",
     component: <Day23 />,
+  },
+  {
+    day: 24,
+    title: "Floating Action Button",
+    description:
+      "A draggable FAB that expands into a staggered vertical menu with spring physics and floating tooltip labels.",
+    component: <Day24 />,
   },
 ];
 // ──────────────────────────────────────────────────────────────────────────
