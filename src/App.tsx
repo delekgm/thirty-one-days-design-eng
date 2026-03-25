@@ -24,6 +24,7 @@ import Day21 from "./days/Day21";
 import Day22 from "./days/Day22";
 import Day23 from "./days/Day23";
 import Day24 from "./days/Day24";
+import Day25 from "./days/Day25";
 
 // ── Day registry ──────────────────────────────────────────────────────────
 // Add each new day here as the month progresses.
@@ -186,6 +187,14 @@ const days = [
     description:
       "A draggable FAB that expands into a staggered vertical menu with spring physics and floating tooltip labels.",
     component: <Day24 />,
+  },
+  {
+    day: 25,
+    title: "Dot Grid",
+    description:
+      "A canvas dot grid with cursor repulsion — dots push away radially and fade near the pointer, then spring back.",
+    component: <Day25 />,
+    fullBleed: true,
   },
 ];
 // ──────────────────────────────────────────────────────────────────────────
