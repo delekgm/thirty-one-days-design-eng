@@ -18,11 +18,11 @@ interface Dot {
 // ── Constants ───────────────────────────────────────────────────────────────
 const CURSOR_RADIUS = 360;
 const REPEL_STRENGTH = 20;
-const SPRING = 0.035;
+const SPRING = 0.025;
 const DAMPING = 0.82;
 const DWELL_MAX = 8; // max dwell multiplier
 const DWELL_UP = 0.005; // slow ramp up when still
-const DWELL_DOWN = 0.85; // faster drain when moving
+const DWELL_DOWN = 0.75; // faster drain when moving
 const NOISE_STRENGTH = 0.15; // subtle jitter on repelled dots
 const DOT_COLOR = "160, 160, 170"; // neutral gray RGB
 
@@ -179,7 +179,7 @@ const Day25 = () => {
   }, [dotSize, spacing, buildGrid]);
 
   return (
-    <div ref={containerRef} className="relative w-full h-full min-h-100">
+    <div ref={containerRef} className="relative w-full h-full min-h-120">
       <canvas ref={canvasRef} className="absolute inset-0" />
     </div>
   );
