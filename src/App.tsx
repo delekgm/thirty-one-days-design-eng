@@ -25,6 +25,7 @@ import Day22 from "./days/Day22";
 import Day23 from "./days/Day23";
 import Day24 from "./days/Day24";
 import Day25 from "./days/Day25";
+import Day26 from "./days/Day26";
 
 // ── Day registry ──────────────────────────────────────────────────────────
 // Add each new day here as the month progresses.
@@ -195,6 +196,12 @@ const days = [
       "A canvas dot grid with cursor repulsion — dots push away radially and fade near the pointer, then spring back.",
     component: <Day25 />,
     fullBleed: true,
+  },
+  {
+    day: 26,
+    title: "Tooltip",
+    description: "Exploring the Base UI render prop for pleasing interactions.",
+    component: <Day26 />,
   },
 ];
 // ──────────────────────────────────────────────────────────────────────────
