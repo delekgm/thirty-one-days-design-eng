@@ -1,4 +1,4 @@
-import { useRef, useEffect, useCallback } from "react";
+import { useRef, useEffect } from "react";
 
 // ── Types ───────────────────────────────────────────────────────────────────
 interface Dot {
@@ -40,26 +40,23 @@ const Day25 = () => {
   const spacing = 14;
 
   // Build the dot grid
-  const buildGrid = useCallback(
-    (width: number, height: number) => {
-      const dots: Dot[] = [];
-      const cols = Math.ceil(width / spacing) + 1;
-      const rows = Math.ceil(height / spacing) + 1;
-      // Center the grid within the canvas
-      const offsetX = (width - (cols - 1) * spacing) / 2;
-      const offsetY = (height - (rows - 1) * spacing) / 2;
+  const buildGrid = (width: number, height: number) => {
+    const dots: Dot[] = [];
+    const cols = Math.ceil(width / spacing) + 1;
+    const rows = Math.ceil(height / spacing) + 1;
+    // Center the grid within the canvas
+    const offsetX = (width - (cols - 1) * spacing) / 2;
+    const offsetY = (height - (rows - 1) * spacing) / 2;
 
-      for (let r = 0; r < rows; r++) {
-        for (let c = 0; c < cols; c++) {
-          const gx = offsetX + c * spacing;
-          const gy = offsetY + r * spacing;
-          dots.push({ gx, gy, x: gx, y: gy, vx: 0, vy: 0, opacity: 1 });
-        }
+    for (let r = 0; r < rows; r++) {
+      for (let c = 0; c < cols; c++) {
+        const gx = offsetX + c * spacing;
+        const gy = offsetY + r * spacing;
+        dots.push({ gx, gy, x: gx, y: gy, vx: 0, vy: 0, opacity: 1 });
       }
-      dotsRef.current = dots;
-    },
-    [spacing],
-  );
+    }
+    dotsRef.current = dots;
+  };
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -176,7 +173,7 @@ const Day25 = () => {
       container.removeEventListener("mousemove", onMouseMove);
       container.removeEventListener("mouseleave", onMouseLeave);
     };
-  }, [dotSize, spacing, buildGrid]);
+  }, []);
 
   return (
     <div ref={containerRef} className="relative w-full h-full min-h-120">
