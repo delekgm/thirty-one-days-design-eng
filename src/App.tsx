@@ -27,6 +27,7 @@ import Day24 from "./days/Day24";
 import Day25 from "./days/Day25";
 import Day26 from "./days/Day26";
 import Day27 from "./days/Day27";
+import Day28 from "./days/Day28";
 
 // ── Day registry ──────────────────────────────────────────────────────────
 // Add each new day here as the month progresses.
@@ -211,6 +212,13 @@ const days = [
       "An animated multi-center gradient with mouse-driven water distortion, powered by GLSL shaders and React Three Fiber.",
     component: <Day27 />,
     fullBleed: true,
+  },
+  {
+    day: 28,
+    title: "Magnetic Button",
+    description:
+      "Buttons that gravitate toward the cursor within a proximity zone, with spring physics and inner text parallax.",
+    component: <Day28 />,
   },
 ];
 // ──────────────────────────────────────────────────────────────────────────
