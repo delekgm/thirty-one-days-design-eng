@@ -26,6 +26,7 @@ import Day23 from "./days/Day23";
 import Day24 from "./days/Day24";
 import Day25 from "./days/Day25";
 import Day26 from "./days/Day26";
+import Day27 from "./days/Day27";
 
 // ── Day registry ──────────────────────────────────────────────────────────
 // Add each new day here as the month progresses.
@@ -202,6 +203,14 @@ const days = [
     title: "Tooltip",
     description: "Exploring the Base UI render prop for pleasing interactions.",
     component: <Day26 />,
+  },
+  {
+    day: 27,
+    title: "Gradient Distortion",
+    description:
+      "An animated multi-center gradient with mouse-driven water distortion, powered by GLSL shaders and React Three Fiber.",
+    component: <Day27 />,
+    fullBleed: true,
   },
 ];
 // ──────────────────────────────────────────────────────────────────────────
