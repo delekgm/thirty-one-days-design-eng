@@ -28,6 +28,7 @@ import Day25 from "./days/Day25";
 import Day26 from "./days/Day26";
 import Day27 from "./days/Day27";
 import Day28 from "./days/Day28";
+import Day29 from "./days/Day29";
 
 // ── Day registry ──────────────────────────────────────────────────────────
 // Add each new day here as the month progresses.
@@ -219,6 +220,13 @@ const days = [
     description:
       "Buttons that gravitate toward the cursor within a proximity zone, with spring physics and inner text parallax.",
     component: <Day28 />,
+  },
+  {
+    day: 29,
+    title: "Animated Counter",
+    description:
+      "An odometer-style counter with spring-animated digit reels, driven by horizontal drag with momentum.",
+    component: <Day29 />,
   },
 ];
 // ──────────────────────────────────────────────────────────────────────────
