@@ -593,10 +593,10 @@ const ArcMesh = ({
   const uniforms = useMemo(
     () => ({
       uColor: { value: accentColor.clone() },
-      uHead: { value: motionEnabled ? 0 : 1 },
+      uHead: { value: 0 },
       uTail: { value: 0 },
     }),
-    [accentColor, motionEnabled],
+    [accentColor],
   );
 
   useFrame((state) => {
