@@ -29,6 +29,7 @@ import Day26 from "./days/Day26";
 import Day27 from "./days/Day27";
 import Day28 from "./days/Day28";
 import Day29 from "./days/Day29";
+import Day30 from "./days/Day30";
 
 // ── Day registry ──────────────────────────────────────────────────────────
 // Add each new day here as the month progresses.
@@ -227,6 +228,14 @@ const days = [
     description:
       "An odometer-style counter with spring-animated digit reels, driven by horizontal drag with momentum.",
     component: <Day29 />,
+  },
+  {
+    day: 30,
+    title: "Depth Gallery",
+    description:
+      "A scroll-reactive 3D gallery where images are stacked along the Z-axis. The camera tunnels through each plane — scroll velocity breathes life into the planes, and the mouse adds a subtle parallax shift.",
+    component: <Day30 />,
+    fullBleed: true,
   },
 ];
 // ──────────────────────────────────────────────────────────────────────────
