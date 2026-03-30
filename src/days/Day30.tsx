@@ -314,7 +314,7 @@ const Day30 = () => {
 
       <div
         ref={heroCopyRef}
-        className="pointer-events-none absolute top-1/2 right-48 max-w-36 -translate-y-1/2 text-left text-ink"
+        className="pointer-events-none absolute top-1/2 right-16 sm:right-48 max-w-36 -translate-y-1/2 text-left text-ink"
         style={{
           opacity:
             1 -
