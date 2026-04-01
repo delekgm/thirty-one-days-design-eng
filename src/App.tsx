@@ -30,6 +30,7 @@ import Day27 from "./days/Day27";
 import Day28 from "./days/Day28";
 import Day29 from "./days/Day29";
 import Day30 from "./days/Day30";
+import Day31 from "./days/Day31";
 
 // ── Day registry ──────────────────────────────────────────────────────────
 // Add each new day here as the month progresses.
@@ -236,6 +237,12 @@ const days = [
       "A scroll-reactive 3D gallery where images are stacked along the Z-axis. The camera tunnels through each plane — scroll velocity breathes life into the planes, and the mouse adds a subtle parallax shift.",
     component: <Day30 />,
     fullBleed: true,
+  },
+  {
+    day: 31,
+    title: "Confetti",
+    description: "We made it!",
+    component: <Day31 />,
   },
 ];
 // ──────────────────────────────────────────────────────────────────────────
